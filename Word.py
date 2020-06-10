@@ -8,26 +8,27 @@ class Word:
 
     def makeDict(self):
         try:
-            d_file = open('dictionary.txt')
-        except IOError:
-            print("No such a file found")
-        with d_file:
+            d_file = open('dictionary')
             eng_dict = set()
             for line in d_file:
                 line = line.strip()
                 eng_dict.add(line.upper())
             return eng_dict
+        except IOError:
+            print("No such a file found")
+       
+           
 
-    def checkWord(self, dict):
-        return self.word in dict
+    def checkWord(self, eng_dict):
+        return self.word in eng_dict
 
-    def makeupWord(self,rack,dict):
+    def makeupWord(self,rack,eng_dict):
         new_word = rack.shuffle()
         search_tries =  100
-        while new_word not in dict and search_tries > 0:
+        while new_word not in eng_dict and search_tries > 0:
             new_word = rack.shuffle()
             search_tries -= 1
-        if new_word not in dict:
+        if new_word not in eng_dict:
             s = "Cannot find a good word"
             return s
         else:

@@ -1,25 +1,25 @@
 from Word import *
 class Board:
 
-    def __init__(self,dict,size):
+    def __init__(self,eng_dict,size):
         self.size = size
         self.board = [['_' for columns in range(size)] for rows in range(size)]
-        self.dict = dict
+        self.dict = eng_dict
 
     # new word, starting position, direction:right or down
     def boardUpdate(self,new_word, row, column, direction):
 
         nw = new_word.upper()
-        dir = direction.upper()
-        if len(nw) > self.size  or row > self.size or column > self.size or direction not in {"right", "down"}:
+        direct = direction.upper()
+        if len(nw) > self.size  or row > self.size or column > self.size or direct not in {"RIGHT", "DOWN"}:
             raise ValueError("Not a proper coordinates or word length")
-        elif dir == "RIGHT":
+        elif direct == "DOWN":
             for i in range(len(nw)):
-                self.board[column+i][row] = nw[i]
+                self.board[row+i][column] = nw[i]
 
         else:
             for i in range(len(nw)):
-                 self.board[column][row+i] = nw[i]
+                 self.board[row][column+i] = nw[i]
 
 
     def getBoard(self):
@@ -37,7 +37,7 @@ class Board:
                     return False
         return True
 
-    def checkRows(self,dict):
+    def checkRows(self,eng_dict):
         s = self.size
         for i in range(s):
             for j in range(s):
@@ -50,13 +50,13 @@ class Board:
                             j = j + x
                             nw = Word(new_word)
                             if new_word != "":
-                                if nw.checkWord(dict) == False:
+                                if nw.checkWord(eng_dict) == False:
                                     return False
 
                             break
         return True
 
-    def checkColumns(self,dict):
+    def checkColumns(self,eng_dict):
         s = self.size
         for j in range(s):
             for i in range(s):
@@ -69,7 +69,7 @@ class Board:
                             j = j + y
                             nw = Word(new_word)
                             if new_word != "":
-                                if nw.checkWord(dict) == False:
+                                if nw.checkWord(eng_dict) == False:
                                     return False
 
                             break
@@ -78,22 +78,25 @@ class Board:
 
 
 
-    def checkBoard(self,dict,word,row,col,direct):
-        temp_board = Board(dict,self.size)
+    def checkBoard(self,eng_dict,word,row,col,direct):
+        temp_board = Board(eng_dict,self.size)
         temp_board.board = self.board
         w = Word(word)
         try:
             temp_board.boardUpdate(word,row,col,direct)
-            if w.checkWord(dict)==False:
+            if w.checkWord(eng_dict)==False:
                 return False
             elif self.checkEmpty(word,row,col) == False:
                 return False
-            elif temp_board.checkRows(dict) == False:
+            elif temp_board.checkRows(eng_dict) == False:
                 return False
-            elif temp_board.checkColumns(dict) == False:
+            elif temp_board.checkColumns(eng_dict) == False:
                 return False
             else:
                 return True
 
         except ValueError:
             return False
+
+
+
