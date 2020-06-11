@@ -1,5 +1,6 @@
 from Letters import *
 from random import shuffle
+
 class Sack:
 
     def __init__(self):
@@ -19,6 +20,8 @@ class Sack:
 
     def take_letter(self):
         return  self.sack.pop()
+
+
 
 
 

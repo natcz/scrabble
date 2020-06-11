@@ -1,8 +1,9 @@
 from random import shuffle
 from Letters import *
 
+
 class Word:
-    def __init__(self,word):
+    def __init__(self, word):
         self.bag = Letters()
         self.word = word
 
@@ -16,15 +17,13 @@ class Word:
             return eng_dict
         except IOError:
             print("No such a file found")
-       
-           
 
     def checkWord(self, eng_dict):
         return self.word in eng_dict
 
-    def makeupWord(self,rack,eng_dict):
+    def makeupWord(self, rack, eng_dict):
         new_word = rack.shuffle()
-        search_tries =  100
+        search_tries = 100
         while new_word not in eng_dict and search_tries > 0:
             new_word = rack.shuffle()
             search_tries -= 1
@@ -39,5 +38,3 @@ class Word:
         for letter in self.word:
             scr += self.bag[letter][0]
         return scr
-
-

@@ -11,7 +11,7 @@ class Board:
 
         nw = new_word.upper()
         direct = direction.upper()
-        if len(nw) > self.size  or row > self.size or column > self.size or direct not in {"RIGHT", "DOWN"}:
+        if len(nw) > self.size or row > self.size or column > self.size or direct not in {"RIGHT", "DOWN"}:
             raise ValueError("Not a proper coordinates or word length")
         elif direct == "DOWN":
             for i in range(len(nw)):

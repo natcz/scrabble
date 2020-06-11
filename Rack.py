@@ -28,10 +28,10 @@ class Rack:
             self.rack.remove(letter)
         self.initRack()
 
-    def exchangeOne(self, indx):
-        letter = self.rack[indx]
+    def exchangeOne(self, ind):
+        letter = self.rack[ind]
         self.sack.append(letter)
-        del self.rack[indx]
+        del self.rack[ind]
         self.rack.append(self.sack.take_letter())
 
 
