@@ -48,15 +48,23 @@ class GameController:
             else:
                 new_letter = pl2.rack.exchangeOne(ind)
                 button.config(text=str(new_letter).upper())
+        def disableB(buttons):
+            buttons[0]["command"] = lambda: None
+            buttons[1]["command"] = lambda: None
+            buttons[2]["command"] = lambda: None
+            buttons[3]["command"] = lambda: None
+            buttons[4]["command"] = lambda: None
+            buttons[5]["command"] = lambda: None
+            buttons[6]["command"] = lambda: None
 
 
-        rackButtons[0].config(command=lambda: exOne(rackButtons[0],0,pl1,pl2))
-        rackButtons[1].config(command=lambda: exOne(rackButtons[1], 1, pl1, pl2))
-        rackButtons[2].config(command=lambda: exOne(rackButtons[2], 2, pl1, pl2))
-        rackButtons[3].config(command=lambda: exOne(rackButtons[3], 3, pl1, pl2))
-        rackButtons[4].config(command=lambda: exOne(rackButtons[4], 4, pl1, pl2))
-        rackButtons[5].config(command=lambda: exOne(rackButtons[5], 5, pl1, pl2))
-        rackButtons[6].config(command=lambda: exOne(rackButtons[6], 6, pl1, pl2))
+        rackButtons[0].config(command=lambda: [exOne(rackButtons[0], 0, pl1, pl2),disableB(rackButtons)])
+        rackButtons[1].config(command=lambda: [exOne(rackButtons[1], 1, pl1, pl2),disableB(rackButtons)])
+        rackButtons[2].config(command=lambda: [exOne(rackButtons[2], 2, pl1, pl2),disableB(rackButtons)])
+        rackButtons[3].config(command=lambda: [exOne(rackButtons[3], 3, pl1, pl2),disableB(rackButtons)])
+        rackButtons[4].config(command=lambda: [exOne(rackButtons[4], 4, pl1, pl2),disableB(rackButtons)])
+        rackButtons[5].config(command=lambda: [exOne(rackButtons[5], 5, pl1, pl2),disableB(rackButtons)])
+        rackButtons[6].config(command=lambda: [exOne(rackButtons[6], 6, pl1, pl2),disableB(rackButtons)])
 
 
 
