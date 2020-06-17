@@ -1,5 +1,6 @@
 from Rack import *
 turn = 1
+word = ""
 class GameController:
 
     def skip(pl1,pl2,scrLabel,scrL,turnLabel,rackButtons):
@@ -40,7 +41,7 @@ class GameController:
                 rackButtons[i]["text"] = str(playerRack[i])
 
 
-    def exchangeOne(pl1,pl2,rackButtons):
+    def exchangeOne(pl1,pl2,rackButtons,board):
         def exOne(button,ind,pl1,pl2):
             if turn % 2 != 0:
                 new_letter = pl1.rack.exchangeOne(ind)
@@ -49,26 +50,38 @@ class GameController:
                 new_letter = pl2.rack.exchangeOne(ind)
                 button.config(text=str(new_letter).upper())
         def disableB(buttons):
-            buttons[0]["command"] = lambda: None
-            buttons[1]["command"] = lambda: None
-            buttons[2]["command"] = lambda: None
-            buttons[3]["command"] = lambda: None
-            buttons[4]["command"] = lambda: None
-            buttons[5]["command"] = lambda: None
-            buttons[6]["command"] = lambda: None
+            for i in range(len(buttons)):
+                buttons[i]["command"] = lambda x=i: GameController.makeMove(pl1,pl2,x, board)
 
 
-        rackButtons[0].config(command=lambda: [exOne(rackButtons[0], 0, pl1, pl2),disableB(rackButtons)])
-        rackButtons[1].config(command=lambda: [exOne(rackButtons[1], 1, pl1, pl2),disableB(rackButtons)])
-        rackButtons[2].config(command=lambda: [exOne(rackButtons[2], 2, pl1, pl2),disableB(rackButtons)])
-        rackButtons[3].config(command=lambda: [exOne(rackButtons[3], 3, pl1, pl2),disableB(rackButtons)])
-        rackButtons[4].config(command=lambda: [exOne(rackButtons[4], 4, pl1, pl2),disableB(rackButtons)])
-        rackButtons[5].config(command=lambda: [exOne(rackButtons[5], 5, pl1, pl2),disableB(rackButtons)])
-        rackButtons[6].config(command=lambda: [exOne(rackButtons[6], 6, pl1, pl2),disableB(rackButtons)])
+        for i in range(len(rackButtons)):
+            rackButtons[i].config(command=lambda x=i: [exOne(rackButtons[x], x, pl1, pl2),disableB(rackButtons)])
 
 
 
 
 
+    def makeMove(pl1,pl2,ind,board):
+        global word
+        def placeLetter(button,letter):
+            button["text"] = str(letter).upper()
+
+        if turn % 2 != 0:
+            letter = pl1.rack.getRack()[ind]
+            word += letter
+        else:
+            letter = pl2.rack.getRack()[ind]
+            word += letter
+
+        for row in range(15):
+            for col in range(15):
+                board[row][col]["command"] = lambda c=col, r=row:placeLetter(board[r][c],letter)
+
+
+    def endTurn():
+        global word
+        print(word)
+        word = ""
+        print(word)
 
 

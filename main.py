@@ -64,11 +64,15 @@ class Main:
     def letsPlay(self):
         b = [['' for columns in range(15)] for rows in range(15)]
         board = BoardVisual(self.root,self.mainframe, b)
-        skipB = Button(self.mainframe,text="SKIP",command= lambda: GameController.skip(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons))
-        exchangeAllB = Button(self.mainframe,text="EXCHANGE ALL",command= lambda: GameController.exchangeAll(self.player1,self.player2,PRackButtons))
-        exchangeOneB = Button(self.mainframe, text="EXCHANGE ONE",command= lambda: GameController.exchangeOne(self.player1,self.player2,PRackButtons))
+        skipB = Button(self.mainframe,text="SKIP")
+        skipB["command"] = lambda: GameController.skip(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons)
+        exchangeAllB = Button(self.mainframe,text="EXCHANGE ALL")
+        exchangeAllB["command"] = lambda: GameController.exchangeAll(self.player1,self.player2,PRackButtons)
+        exchangeOneB = Button(self.mainframe, text="EXCHANGE ONE")
+        exchangeOneB["command"] = lambda: GameController.exchangeOne(self.player1,self.player2,PRackButtons,board.board)
         hintButton = Button(self.mainframe,text="HINT")
         endMoveButton = Button(self.mainframe, text="END MOVE")
+        endMoveButton["command"] = lambda: GameController.endTurn()
         skipB.grid(column = 20, row = 10)
         exchangeAllB.grid(column = 20, row = 11)
         exchangeOneB.grid(column = 20, row = 12)
@@ -88,7 +92,8 @@ class Main:
             button.grid(column=22+i, row=6)
             PRackButtons.append(button)
 
-
+        for i in range(len(PRackButtons)):
+            PRackButtons[i]["command"] = lambda x=i: GameController.makeMove(self.player1,self.player2,x, board.board)
 
 
 
