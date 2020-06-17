@@ -5,6 +5,7 @@ from StartGame import *
 from Sack import *
 from Player import *
 from BoardVisual import *
+from GameController import *
 
 class Main:
     startframe: Frame
@@ -27,7 +28,7 @@ class Main:
         startButton.grid(column = 3, row = 5)
         instrButton = Button(self.startframe, text = "See the instruction", command = lambda: Main.get_instr(self))
         instrButton.grid(column = 3, row = 8)
-        self.root.mainloop()
+
 
     def show_frame(self, cont):
         frame = self.frames[cont]
@@ -63,8 +64,40 @@ class Main:
     def letsPlay(self):
         b = [['' for columns in range(15)] for rows in range(15)]
         board = BoardVisual(self.root,self.mainframe, b)
-        
+        skipB = Button(self.mainframe,text="SKIP",command= lambda: GameController.skip(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons))
+        exchangeAllB = Button(self.mainframe,text="EXCHANGE ALL",command= lambda: GameController.exchangeAll(self.player1,self.player2,PRackButtons))
+        exchangeOneB = Button(self.mainframe, text="EXCHANGE ONE",command= lambda: GameController.exchangeOne(self.player1,self.player2,PRackButtons))
+        hintButton = Button(self.mainframe,text="HINT")
+        endMoveButton = Button(self.mainframe, text="END MOVE")
+        skipB.grid(column = 20, row = 10)
+        exchangeAllB.grid(column = 20, row = 11)
+        exchangeOneB.grid(column = 20, row = 12)
+        hintButton.grid(column = 20, row = 13)
+        endMoveButton.grid(column = 20, row = 14)
+        TurnLabel = Label(self.mainframe, text="IT'S " + str(self.player1.name).upper() + "'S TURN")
+        PScoreLabel = Label(self.mainframe, text=str(self.player1.name).upper() +"'S SCORE:")
+        ScoreLabel = Label(self.mainframe, text=str(self.player1.score))
+        TurnLabel.grid(column=21, row=2)
+        PScoreLabel.grid(column=21, row=3)
+        ScoreLabel.grid(column=22, row=3)
+        PRackButtons = []
+        playerRack = self.player1.rack.getRack()
+
+        for i in range(len(playerRack)):
+            button = Button(self.mainframe, height=3, width=3, bg="bisque", fg="gray1", text=str(playerRack[i]))
+            button.grid(column=22+i, row=6)
+            PRackButtons.append(button)
 
 
 
-Main()
+
+
+
+
+
+
+
+
+
+a=Main()
+a.root.mainloop()

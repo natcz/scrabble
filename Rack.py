@@ -10,29 +10,43 @@ class Rack:
 
 
     def initRack(self):
-        for _ in range(self.max_letters):
+        sack = self.sack.getSack()
+        shuffle(sack)
+        for i in range(self.max_letters):
             if self.sack.left_letters() != 0:
-                self.rack.append(self.sack.take_letter())
-        self.sack.shuffle()
+                self.rack.append(sack[i])
+                self.sack.remove(sack[i])
+
+
 
 
 
     def fillRack(self):
+        sack = self.sack.getSack()
+        shuffle(sack)
         while len(self.rack) < self.max_letters and  self.sack.left_letters() > 0:
-                self.rack.append(self.sack.take_letter())
+                self.rack.append(sack[0])
+                self.sack.remove(sack[0])
+
 
 
     def exchangeAll(self):
-        for letter in self.rack:
-            self.sack.append(letter)
-            self.rack.remove(letter)
+        rack = self.rack[:]
+        for i in range(len(rack)):
+            self.rack.remove(rack[i])
+            self.sack.append(rack[i])
         self.initRack()
+
 
     def exchangeOne(self, ind):
         letter = self.rack[ind]
         self.sack.append(letter)
-        del self.rack[ind]
-        self.rack.append(self.sack.take_letter())
+        new_letter = self.sack.take_letter()
+        self.rack[ind] = new_letter
+        self.sack.remove(new_letter)
+        return new_letter
 
+    def getRack(self):
+        return self.rack
 
 

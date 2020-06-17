@@ -35,6 +35,8 @@ class Letters:
         self.bag['Y'] = [randint(1, 15),randint(1, 3)]
         self.bag['Z'] = [randint(1, 15),randint(1, 3)]
 
+    def getLetters(self):
+        return self.bag
 
 
 
