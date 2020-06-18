@@ -57,7 +57,7 @@ class CheckBoard:
                             break
         return True
 
-    def checkBoard(self, eng_dict, word, row, col, direct):
+    def checkBoard(self, eng_dict, word, coords):
         temp_board = Board(eng_dict, self.board.size)
         temp_board.board = self.board
         w = Word(word)

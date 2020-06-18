@@ -38,6 +38,16 @@ class Letters:
     def getLetters(self):
         return self.bag
 
+    def makeDict(self):
+        try:
+            d_file = open('dictionary')
+            eng_dict = set()
+            for line in d_file:
+                line = line.strip()
+                eng_dict.add(line.upper())
+            return eng_dict
+        except IOError:
+            print("No such a file found")
 
 
 

@@ -7,16 +7,6 @@ class Word:
         self.bag = Letters()
         self.word = word
 
-    def makeDict(self):
-        try:
-            d_file = open('dictionary')
-            eng_dict = set()
-            for line in d_file:
-                line = line.strip()
-                eng_dict.add(line.upper())
-            return eng_dict
-        except IOError:
-            print("No such a file found")
 
     def checkWord(self, eng_dict):
         return self.word in eng_dict
