@@ -16,5 +16,8 @@ class Player:
         plus_scr = w.score()
         self.score += plus_scr
 
+    def remove(self,letter):
+        self.rack.remove(letter)
+
 
 

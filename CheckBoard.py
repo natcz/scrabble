@@ -7,68 +7,71 @@ class CheckBoard:
     def __init__(self, board):
         self.board = board
 
-    def checkEmpty(self, word, row, col):
-        if dir == "RIGHT":
-            for i in range(len(word)):
-                if self.board[col + i][row] != '_':
-                    return False
-
-        else:
-            for i in range(len(word)):
-                if self.board[col][row + i] != '_':
-                    return False
-        return True
-
     def checkRows(self, eng_dict):
         s = self.board.size
-        for i in range(s):
-            for j in range(s):
-                new_word = ""
-                if self.board[i][j] != '_':
-                    for x in range(s - j - 1):
-                        if self.board[i][j] != '_':
-                            new_word += self.board[i][j + x]
+        b = self.board
+
+        for row in range(s):
+            for col in range(s):
+                if b.board[row][col] != '_':
+                    new_word = ""
+                    counter = 0
+                    for i in range(col, s):
+                        if b.board[row][i] != '_':
+                            new_word += b.board[row][i]
+                            counter += 1
                         else:
-                            j = j + x
-                            nw = Word(new_word)
-                            if new_word != "":
+                            if new_word != "" and len(new_word) != 1:
+                                nw = Word(new_word)
+                                print(new_word,"row")
                                 if not nw.checkWord(eng_dict):
                                     return False
-
-                            break
+                            col += counter
+                        break
         return True
+
+
+
+
+
 
     def checkColumns(self, eng_dict):
         s = self.board.size
-        for j in range(s):
-            for i in range(s):
-                new_word = ""
-                if self.board[i][j] != '_':
-                    for y in range(s - j - 1):
-                        if self.board[i][j] != '_':
-                            new_word += self.board[i][j + y]
+        b = self.board
+        for col in range(s):
+            for row in range(s):
+                if b.board[row][col] != '_':
+                    new_word = ""
+                    counter = 0
+                    for i in range(row,s):
+                        if b.board[i][col] != '_':
+                            new_word += b.board[i][col]
+                            counter += 1
                         else:
-                            j = j + y
-                            nw = Word(new_word)
-                            if new_word != "":
+                            if new_word != "" and len(new_word) != 1:
+                                nw = Word(new_word)
+                                print(new_word, "col")
                                 if not nw.checkWord(eng_dict):
                                     return False
+                            row += counter
 
-                            break
+                        break
+
         return True
+
+
+
+
 
     def checkBoard(self, eng_dict, word, coords):
         temp_board = Board(eng_dict, self.board.size)
-        temp_board.board = self.board
-        w = Word(word)
+        temp_board.board = self.board.board[:]
+
+
         try:
-            temp_board.boardUpdate(word, row, col, direct)
+            temp_board.boardUpdate(word,coords)
             temp_board_check = CheckBoard(temp_board)
-            if not w.checkWord(eng_dict):
-                return False
-            elif not self.checkEmpty(word, row, col):
-                return False
-            elif not temp_board_check.checkRows(eng_dict):
+            if not temp_board_check.checkRows(eng_dict):
                 return False
             elif not temp_board_check.checkColumns(eng_dict):
                 return False
@@ -76,4 +79,5 @@ class CheckBoard:
                 return True
 
         except ValueError:
+            print("ohno")
             return False

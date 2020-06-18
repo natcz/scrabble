@@ -24,7 +24,7 @@ class Rack:
     def fillRack(self):
         sack = self.sack.getSack()
         shuffle(sack)
-        while len(self.rack) < self.max_letters and  self.sack.left_letters() > 0:
+        while len(self.rack) <= self.max_letters and  self.sack.left_letters() > 0:
                 self.rack.append(sack[0])
                 self.sack.remove(sack[0])
 
@@ -48,5 +48,9 @@ class Rack:
 
     def getRack(self):
         return self.rack
+
+    def remove(self,letter):
+        self.rack.remove(letter)
+
 
 

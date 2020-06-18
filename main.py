@@ -72,7 +72,7 @@ class Main:
         exchangeOneB["command"] = lambda: GameController.exchangeOne(self.player1,self.player2,PRackButtons,board.board)
         hintButton = Button(self.mainframe,text="HINT")
         endMoveButton = Button(self.mainframe, text="END MOVE")
-        endMoveButton["command"] = lambda: GameController.endTurn()
+        endMoveButton["command"] = lambda: GameController.endTurn(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons,board.board)
         skipB.grid(column = 20, row = 10)
         exchangeAllB.grid(column = 20, row = 11)
         exchangeOneB.grid(column = 20, row = 12)

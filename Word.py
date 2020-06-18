@@ -26,5 +26,5 @@ class Word:
     def score(self):
         scr = 0
         for letter in self.word:
-            scr += self.bag[letter][0]
+            scr += self.bag.bag[letter][0]
         return scr

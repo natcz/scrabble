@@ -22,7 +22,7 @@ class Letters:
         self.bag['L'] = [randint(1, 15),randint(1, 3)]
         self.bag['M'] = [randint(1, 15),randint(1, 3)]
         self.bag['N'] = [randint(1, 15),randint(1, 3)]
-        self.bag['0'] = [randint(1, 15),randint(1, 3)]
+        self.bag['O'] = [randint(1, 15),randint(1, 3)]
         self.bag['Q'] = [randint(1, 15),randint(1, 3)]
         self.bag['P'] = [randint(1, 15),randint(1, 3)]
         self.bag['R'] = [randint(1, 15),randint(1, 3)]
