@@ -6,6 +6,7 @@ from Sack import *
 from Player import *
 from BoardVisual import *
 from GameController import *
+from Letters import *
 
 class Main:
     startframe: Frame
@@ -30,12 +31,8 @@ class Main:
         instrButton.grid(column = 3, row = 8)
 
 
-    def show_frame(self, cont):
-        frame = self.frames[cont]
-        frame.tkraise()
-
     def get_instr(self):
-        instrWindow =  Toplevel()
+        instrWindow = Toplevel()
         instr = self.startgame.viewInstruct()
         instrmsg = Message(instrWindow, text = instr)
         instrmsg.grid(column = 1, row = 1)
@@ -63,37 +60,60 @@ class Main:
 
     def letsPlay(self):
         b = [['' for columns in range(15)] for rows in range(15)]
+        GameContr = GameController(self.root,self.mainframe,self.sack)
         board = BoardVisual(self.root,self.mainframe, b)
-        skipB = Button(self.mainframe,text="SKIP")
-        skipB["command"] = lambda: GameController.skip(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons)
-        exchangeAllB = Button(self.mainframe,text="EXCHANGE ALL")
-        exchangeAllB["command"] = lambda: GameController.exchangeAll(self.player1,self.player2,PRackButtons)
-        exchangeOneB = Button(self.mainframe, text="EXCHANGE ONE")
-        exchangeOneB["command"] = lambda: GameController.exchangeOne(self.player1,self.player2,PRackButtons,board.board)
-        hintButton = Button(self.mainframe,text="HINT")
-        endMoveButton = Button(self.mainframe, text="END MOVE")
-        endMoveButton["command"] = lambda: GameController.endTurn(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons,board.board)
-        skipB.grid(column = 20, row = 10)
-        exchangeAllB.grid(column = 20, row = 11)
-        exchangeOneB.grid(column = 20, row = 12)
-        hintButton.grid(column = 20, row = 13)
-        endMoveButton.grid(column = 20, row = 14)
+        emptyLabel = Label(self.mainframe,text="     ").grid(column=19, row = 1)
+        skipB = Button(self.mainframe,text="SKIP", width= 12)
+        skipB["command"] = lambda: GameContr.skip(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons)
+        exchangeAllB = Button(self.mainframe,text="EXCHANGE ALL", width= 12)
+        exchangeAllB["command"] = lambda: GameContr.exchangeAll(self.player1,self.player2,PRackButtons)
+        exchangeOneB = Button(self.mainframe, text="EXCHANGE ONE", width= 12)
+        exchangeOneB["command"] = lambda: GameContr.exchangeOne(self.player1,self.player2,PRackButtons,board.board)
+        hintButton = Button(self.mainframe,text="HINT", width= 12)
+        endMoveButton = Button(self.mainframe, text="END MOVE", width= 12)
+        endMoveButton["command"] = lambda: GameContr.endTurn(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons,board.board)
+        skipB.grid(column = 20, row = 11)
+        exchangeAllB.grid(column = 20, row = 7)
+        exchangeOneB.grid(column = 20, row = 8)
+        hintButton.grid(column = 20, row = 9)
+        endMoveButton.grid(column = 20, row = 10)
         TurnLabel = Label(self.mainframe, text="IT'S " + str(self.player1.name).upper() + "'S TURN")
         PScoreLabel = Label(self.mainframe, text=str(self.player1.name).upper() +"'S SCORE:")
         ScoreLabel = Label(self.mainframe, text=str(self.player1.score))
-        TurnLabel.grid(column=21, row=2)
-        PScoreLabel.grid(column=21, row=3)
-        ScoreLabel.grid(column=22, row=3)
+        TurnLabel.grid(column=20, row=2)
+        PScoreLabel.grid(column=20, row=3)
+        ScoreLabel.grid(column=21, row=3)
+        emptyL =Label(self.mainframe,text= "POINTS\n"
+                                           " FOR LETTERS:")
+        emptyL.grid(column =30,row=1)
+        letters = Letters()
+        bag=letters.bag
+        i = 0
+        for key,val in bag.items():
+            if i<=12:
+                LettersL = Label(self.mainframe,text=str(key) + " = " + str(val[0]) + "   ")
+                LettersL.grid(column=31, row=2+i)
+
+            else:
+                LettersL = Label(self.mainframe, text=str(key) + " = " + str(val[0]))
+                LettersL.grid(column=32, row=2 + i-13)
+            i+=1
+
+
         PRackButtons = []
         playerRack = self.player1.rack.getRack()
 
+        emptyL2= Label( self.mainframe, text = "    ").grid(column =22, row= 1)
         for i in range(len(playerRack)):
             button = Button(self.mainframe, height=3, width=3, bg="bisque", fg="gray1", text=str(playerRack[i]))
-            button.grid(column=22+i, row=6)
+            button.grid(column=23+i, row=9)
             PRackButtons.append(button)
 
         for i in range(len(PRackButtons)):
-            PRackButtons[i]["command"] = lambda x=i: GameController.makeMove(self.player1,self.player2,x, board.board)
+            PRackButtons[i]["command"] = lambda x=i: GameContr.makeMove(self.player1,self.player2,x, board.board,PRackButtons)
+
+
+
 
 
 

@@ -5,6 +5,7 @@ from tkinter import *
 from CheckBoard import *
 from collections import defaultdict as dd
 from Word import *
+from EndGame import *
 turn = 1
 good_first_word = False
 Wcoordinates = dd()
@@ -16,7 +17,13 @@ rack_indx = dd()
 
 class GameController:
 
-    def skip(pl1,pl2,scrLabel,scrL,turnLabel,rackButtons):
+    def __init__(self,root,frame,sack):
+        self.root = root
+        self.sack = sack
+        self.frame = frame
+
+
+    def skip(self,pl1,pl2,scrLabel,scrL,turnLabel,rackButtons):
         global turn
         if turn % 2 == 0:
             scrLabel["text"] = str(pl1.name).upper() +"'S SCORE:"
@@ -39,7 +46,7 @@ class GameController:
 
 
 
-    def exchangeAll(pl1,pl2,rackButtons):
+    def exchangeAll(self,pl1,pl2,rackButtons):
         global turn
 
         if turn % 2 != 0:
@@ -54,7 +61,7 @@ class GameController:
                 rackButtons[i]["text"] = str(playerRack[i])
 
 
-    def exchangeOne(pl1,pl2,rackButtons,board):
+    def exchangeOne(self,pl1,pl2,rackButtons,board):
         def exOne(button,ind,pl1,pl2):
             if turn % 2 != 0:
                 new_letter = pl1.rack.exchangeOne(ind)
@@ -62,19 +69,19 @@ class GameController:
             else:
                 new_letter = pl2.rack.exchangeOne(ind)
                 button.config(text=str(new_letter).upper())
-        def disableB(buttons):
+        def disableB(self,buttons):
             for i in range(len(buttons)):
-                buttons[i]["command"] = lambda x=i: GameController.makeMove(pl1,pl2,x, board)
+                buttons[i]["command"] = lambda x=i: self.makeMove(pl1,pl2,x, board,rackButtons)
 
 
         for i in range(len(rackButtons)):
-            rackButtons[i].config(command=lambda x=i: [exOne(rackButtons[x], x, pl1, pl2),disableB(rackButtons)])
+            rackButtons[i].config(command=lambda x=i: [exOne(rackButtons[x], x, pl1, pl2),disableB(self,rackButtons)])
 
 
 
 
 
-    def makeMove(pl1,pl2,ind,board):
+    def makeMove(self,pl1,pl2,ind,board,rackButtons):
         global rack_indx
         def placeLetter(button,row,col,letter):
             global coord
@@ -82,6 +89,8 @@ class GameController:
             button["text"] = str(letter).upper()
             Wcoordinates[(row, col)] = letter
             coord.append((row, col))
+
+
 
         if turn % 2 != 0:
             letter = pl1.rack.getRack()[ind]
@@ -95,12 +104,18 @@ class GameController:
         for row in range(15):
             for col in range(15):
                 board[row][col]["command"] = lambda c=col, r=row:placeLetter(board[r][c],r,c,letter)
+        rackButtons[ind]["state"] = "disabled"
 
-    def undoMove(coords,board):
+    def undoMove(self,coords,board,rackButtons,pl1,pl2):
+        global demoBoard
         for i in range(len(coords)):
             board[coords[i][0]][coords[i][1]]["text"] = " "
+            demoBoard.board[coords[i][0]][coords[i][1]] = "_"
+        for i in range(len(rack_indx)):
+            rackButtons[i]["state"] = "normal"
 
-    def makeProperWord():
+
+    def makeProperWord(self):
         global Wcoordinates, coord
         sameRow = True
         sameCol = True
@@ -127,12 +142,15 @@ class GameController:
 
 
 
-    def endTurn(pl1,pl2,scrLabel,scrL,turnLabel,rackButtons,visualB):
+    def endTurn(self,pl1,pl2,scrLabel,scrL,turnLabel,rackButtons,visualB):
         global coord,eng_dict,rack_indx,turn
         global Wcoordinates,demoBoard,good_first_word
         checkB = CheckBoard(demoBoard)
-        proper_word = GameController.makeProperWord()
+        proper_word = self.makeProperWord()
         w = Word(proper_word)
+
+        for i in range(len(rackButtons)):
+            rackButtons[i]["state"] = "normal"
 
 
         if turn == 1 or not good_first_word:
@@ -179,8 +197,9 @@ class GameController:
             fail_msg.grid(row = 1, column = 1)
             ok_Button = Button(bad_wordWindow,text = "OK",command = lambda: bad_wordWindow.destroy())
             ok_Button.grid(row = 2, column = 2)
-            GameController.undoMove(coord,visualB)
-
+            self.undoMove(coord,visualB,rackButtons,pl1,pl2)
+        if pl1.score >= 50 or pl2.score >= 50 or self.sack.sack == []:
+            self.endGame(pl1,pl2)
 
         Wcoordinates = dd()
         coord = []
@@ -190,8 +209,8 @@ class GameController:
 
         else:
             pl2.rack.fillRack()
-        GameController.skip(pl1,pl2,scrLabel,scrL,turnLabel,rackButtons)
+        self.skip(pl1,pl2,scrLabel,scrL,turnLabel,rackButtons)
 
-
-
-
+    def endGame(self,pl1,pl2):
+        endG = EndGame(pl1,pl2,self.root,self.frame)
+        endG.endWindow()

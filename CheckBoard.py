@@ -10,9 +10,10 @@ class CheckBoard:
     def checkRows(self, eng_dict):
         s = self.board.size
         b = self.board
-
-        for row in range(s):
-            for col in range(s):
+        row = 0
+        while row < s:
+            col = 0
+            while col < s:
                 if b.board[row][col] != '_':
                     new_word = ""
                     counter = 0
@@ -23,11 +24,13 @@ class CheckBoard:
                         else:
                             if new_word != "" and len(new_word) != 1:
                                 nw = Word(new_word)
-                                print(new_word,"row")
+                                print(new_word)
                                 if not nw.checkWord(eng_dict):
                                     return False
                             col += counter
-                        break
+                            break
+                col += 1
+            row += 1
         return True
 
 
@@ -38,8 +41,11 @@ class CheckBoard:
     def checkColumns(self, eng_dict):
         s = self.board.size
         b = self.board
-        for col in range(s):
-            for row in range(s):
+
+        col = 0
+        while col < s:
+            row = 0
+            while row < s:
                 if b.board[row][col] != '_':
                     new_word = ""
                     counter = 0
@@ -49,13 +55,14 @@ class CheckBoard:
                             counter += 1
                         else:
                             if new_word != "" and len(new_word) != 1:
+                                print(new_word)
                                 nw = Word(new_word)
-                                print(new_word, "col")
                                 if not nw.checkWord(eng_dict):
                                     return False
                             row += counter
-
-                        break
+                            break
+                row += 1
+            col += 1
 
         return True
 
@@ -65,7 +72,8 @@ class CheckBoard:
 
     def checkBoard(self, eng_dict, word, coords):
         temp_board = Board(eng_dict, self.board.size)
-        temp_board.board = self.board.board[:]
+        board = self.board.getBoard()
+        temp_board.board = board[:]
 
 
         try:
@@ -79,5 +87,4 @@ class CheckBoard:
                 return True
 
         except ValueError:
-            print("ohno")
             return False
