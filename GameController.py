@@ -6,6 +6,8 @@ from CheckBoard import *
 from collections import defaultdict as dd
 from Word import *
 from EndGame import *
+from Hint import *
+
 turn = 1
 good_first_word = False
 Wcoordinates = dd()
@@ -175,7 +177,7 @@ class GameController:
                     pl1.remove(l)
                     ind = rack_indx[l]
                     rackButtons[ind]["text"] = " "
-                pl1.incScore(proper_word)
+                pl1.incScore(proper_word,Wcoordinates)
 
             else:
                 for xy in coord:
@@ -183,7 +185,7 @@ class GameController:
                     pl2.remove(l)
                     ind = rack_indx[l]
                     rackButtons[ind]["text"] = " "
-                pl2.incScore(proper_word)
+                pl2.incScore(proper_word,Wcoordinates)
 
 
 
@@ -210,6 +212,34 @@ class GameController:
         else:
             pl2.rack.fillRack()
         self.skip(pl1,pl2,scrLabel,scrL,turnLabel,rackButtons)
+
+    def hint(self,pl1,pl2):
+        if turn % 2 != 0:
+            h = Hint(demoBoard,eng_dict,pl1.rack.getRack())
+            word,w_coord = h.findHint()
+        else:
+            h = Hint(demoBoard, eng_dict, pl2.rack.getRack())
+            word, w_coord = h.findHint()
+        if word != "":
+            print(w_coord)
+            x, y = w_coord[0]
+            hint_window = Toplevel()
+            hint_msg = Message(hint_window, text = "TRY: " + str(word).upper()+ "\n start at: " + str(x+1) +"," + str(y+1))
+            hint_msg.grid(column =1 , row =1)
+            close_button = Button(hint_window,text="OK")
+            close_button.grid(column=2,row=2)
+            close_button["command"]= lambda: hint_window.destroy()
+        else:
+            hint_window = Toplevel()
+            hint_msg = Message(hint_window,
+                               text="NO PROPER MOVE FOUND")
+            hint_msg.grid(column=1, row=1)
+            close_button = Button(hint_window, text="OK")
+            close_button.grid(column=2, row=2)
+            close_button["command"] = lambda: hint_window.destroy()
+
+
+
 
     def endGame(self,pl1,pl2):
         endG = EndGame(pl1,pl2,self.root,self.frame)

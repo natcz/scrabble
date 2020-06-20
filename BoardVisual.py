@@ -66,3 +66,5 @@ class BoardVisual:
         self.board[9][5]["text"] = "L2"
         self.board[9][9]["bg"] = "plum2"
         self.board[9][9]["text"] = "L2"
+
+

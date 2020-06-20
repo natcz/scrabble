@@ -70,6 +70,7 @@ class Main:
         exchangeOneB = Button(self.mainframe, text="EXCHANGE ONE", width= 12)
         exchangeOneB["command"] = lambda: GameContr.exchangeOne(self.player1,self.player2,PRackButtons,board.board)
         hintButton = Button(self.mainframe,text="HINT", width= 12)
+        hintButton["command"] = lambda: GameContr.hint(self.player1,self.player2)
         endMoveButton = Button(self.mainframe, text="END MOVE", width= 12)
         endMoveButton["command"] = lambda: GameContr.endTurn(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons,board.board)
         skipB.grid(column = 20, row = 11)
@@ -111,14 +112,6 @@ class Main:
 
         for i in range(len(PRackButtons)):
             PRackButtons[i]["command"] = lambda x=i: GameContr.makeMove(self.player1,self.player2,x, board.board,PRackButtons)
-
-
-
-
-
-
-
-
 
 
 

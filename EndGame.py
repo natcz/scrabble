@@ -14,10 +14,9 @@ class EndGame:
         score2 = self.player2.getScore()
         if score1 > score2:
             return self.player1
-        elif score2 > score1:
-            return self.player2
         else:
-            return False     #remis
+            return self.player2
+
 
     def endWindow(self):
         endWindow = Toplevel()
