@@ -106,10 +106,7 @@ class Hint:
                             free_left = board_letters_coords[letter][i][5]
                             x = board_letters_coords[letter][i][0]
                             y = board_letters_coords[letter][i][1]
-                            print(word)
-                            print(letter)
-                            print(l_left)
-                            print(r_left)
+
                             horizon_good = l_left <= free_left and r_left <= free_right
                             vertic_good = l_left <= free_up and r_left <= free_down
                             w_coords = []

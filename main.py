@@ -69,10 +69,10 @@ class Main:
         exchangeAllB["command"] = lambda: GameContr.exchangeAll(self.player1,self.player2,PRackButtons)
         exchangeOneB = Button(self.mainframe, text="EXCHANGE ONE", width= 12)
         exchangeOneB["command"] = lambda: GameContr.exchangeOne(self.player1,self.player2,PRackButtons,board.board)
-        hintButton = Button(self.mainframe,text="HINT", width= 12)
+        hintButton = Button(self.mainframe,text="HINT", width= 12,state="disabled")
         hintButton["command"] = lambda: GameContr.hint(self.player1,self.player2)
         endMoveButton = Button(self.mainframe, text="END MOVE", width= 12)
-        endMoveButton["command"] = lambda: GameContr.endTurn(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons,board.board)
+        endMoveButton["command"] = lambda: GameContr.endTurn(self.player1,self.player2,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons,board.board,hintButton,exchangeAllB,exchangeOneB,skipB)
         skipB.grid(column = 20, row = 11)
         exchangeAllB.grid(column = 20, row = 7)
         exchangeOneB.grid(column = 20, row = 8)
@@ -111,7 +111,7 @@ class Main:
             PRackButtons.append(button)
 
         for i in range(len(PRackButtons)):
-            PRackButtons[i]["command"] = lambda x=i: GameContr.makeMove(self.player1,self.player2,x, board.board,PRackButtons)
+            PRackButtons[i]["command"] = lambda x=i: GameContr.makeMove(self.player1,self.player2,x, board.board,PRackButtons,exchangeAllB,exchangeOneB,skipB)
 
 
 
