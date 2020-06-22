@@ -3,11 +3,10 @@ from random import randint, choice
 class Letters:
 
     def __init__(self):
-        self.bag = dict()
+        self.bag = dict()           #dictionary with info about letters
         self.startLetters()
 
-    # letter - points - number of tiles in the bag
-    def startLetters(self):
+    def startLetters(self):         # key: letter - val: [points you get for the letter, number of tiles in the bag]
         self.bag['A'] = [1,9]
         self.bag['B'] = [3,2]
         self.bag['C'] = [3,2]
@@ -38,9 +37,9 @@ class Letters:
     def getLetters(self):
         return self.bag
 
-    def makeDict(self):
+    def makeDict(self):                     #making a  set of words from the english dictionary file
         try:
-            d_file = open('dictionary')
+            d_file = open('dictionary')     #file from  https://www.mit.edu/~ecprice/wordlist.10000
             eng_dict = set()
             for line in d_file:
                 line = line.strip()

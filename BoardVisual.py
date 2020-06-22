@@ -13,24 +13,23 @@ class BoardVisual:
 
 
     def initialize(self):
+        #creating labels around the board
         for col in range(1, 16):
             label = Label(self.bframe, text=str(col))
             label.grid(row=0, column=col)
         for row in range(1, 16):
             label = Label(self.bframe, text=str(row))
             label.grid(row=row, column=0)
-
-
-
+        #creating visualisation of the board itself
         for row in range(1, 16):
             for col in range(1, 16):
                 button = Button(self.bframe, height=3, width=3, bg="bisque", fg="gray1", text=" ")
                 button.grid(row=row, column=col)
                 self.board[row - 1][col - 1] = button
-
-        self.board[7][7]["bg"] = "salmon"
+        #special tiles
+        self.board[7][7]["bg"] = "salmon"       #center of the board
         self.board[7][7]["text"] = "♥"
-
+        #LX means this place is a bonus giver (you get a bonus points if you place the letter on them)
         self.board[0][0]["bg"] = "light blue"
         self.board[0][0]["text"] = "L5"
         self.board[14][14]["bg"] = "light blue"

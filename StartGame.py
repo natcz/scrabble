@@ -15,26 +15,19 @@ class StartGame:
                            "On your right you can see a label informing about which player's turn it is and his score.\n" \
                            "Your tiles are displayed below and on the left you will see a functional buttons.\n" \
                            "On the right side there is an information about points you get using a particular letter\n\n" \
-                           "When you are the one making the first move you must start placing your word on the special sqauare with ♥ on.\n"\
+                           "When you are the one making the first move you must start placing your word on the special sqauare with ♥ on.\n" \
                            "After each correct move your rack is being filled and your score increased.\n" \
                            "In case of incorrect move you will be notified and you will loose your turn.\n\n" \
                            "2. Functional buttons:\n" \
                            "SKIP - loose your turn with no move\n" \
+                           "HINT - program will provide you a word (and a starting point)\n" \
+                           " you can make with your letters and place it on a board\n" \
                            "EXCHANGE ALL - exchange all your letters\n" \
                            "EXCHANGE ONE - exchange one letter, choose it by clicking on the tile\n" \
                            "END MOVE - confirm your move (it will be checked) \n\n" \
                            "3. End of the game\n" \
                            "The game is over if one of the player reach 50 points or there are no more letters in the Bag.\n" \
                            "The winner's name is displayed on the screen."
-
-
-
-
-
-
-
-
-
 
     def viewInstruct(self):
         return self.instruction

@@ -8,16 +8,15 @@ class Player:
         self.score = 0
         self.name = name
 
-    def getScore(self):
+    def getScore(self):     #returning score (int)
         return self.score
 
-    def incScore(self,word,coords):
-        w = Word(word)
-        plus_scr = w.score(coords)
+    def incScore(self,word,coords):  #increasing score , word - string
+        w = Word(word)               #coords is a deafaultdict where key: coordinates of the letter (x,y) val: letter
+        plus_scr = w.score(coords)   #calculating score increase using Word() score method (it returns int)
         self.score += plus_scr
 
-    def remove(self,letter):
-        self.rack.remove(letter)
+
 
 
 
