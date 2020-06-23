@@ -9,9 +9,19 @@ from GameController import *
 from Letters import *
 
 class Main:
-    startframe: Frame
+
 
     def __init__(self):
+        """
+                Constructor of Main class.
+                        sack:(Sack) representation of bag of letters
+                        root:(Tk) tkinter root
+                        startframe:(Frame) tkinter Frame displayed when the game starts
+                        mainframe:(Frame) tkinter Frame displayed during the game with board, rack and functional buttons
+                        player1:(Player) representation of the first player
+                        player2:(Player) representation of the second player
+                        startgame:(StartGame) object  needed to display an instruction
+        """
         self.root = Tk()
         self.startframe = Frame(self.root)
         self.mainframe = Frame(self.root)
@@ -30,7 +40,11 @@ class Main:
         instrButton.grid(column=3, row=8)
 
 
-    def getInstr(self):  #displaying an instruction
+    def getInstr(self):
+        """
+                This function creates a window where the instruction is displayed
+                :return: void - only displays text
+        """
         instrWindow = Toplevel()
         instr = self.startgame.viewInstruct()
         instrmsg = Message(instrWindow, text=instr)
@@ -39,8 +53,13 @@ class Main:
         closeinstrButton.grid(column=3, row=3)
 
 
-    def getNames(self):  #making entry windows to save players' names
-        def saveName(self):
+    def getNames(self):
+        """
+            This function creates a window where you can input player's names and saves them
+            :return: void - only creating tkinter wigets and saving names
+        """
+
+        def saveName():
             self.player1.name = name1entry.get()
             self.player2.name = name2entry.get()
 
@@ -51,7 +70,7 @@ class Main:
         name2Label = Label(nameWindow, text="Player2")
         #destroing startframe and going to mainframe with letsPlay method
         confirmB = Button(nameWindow, text="Confirm")
-        confirmB["command"] = lambda : [saveName(self),nameWindow.destroy(),
+        confirmB["command"] = lambda : [saveName(),nameWindow.destroy(),
                                         self.startframe.destroy(),Main.letsPlay(self)]
 
         name1entry.grid(column=2,  row=1)
@@ -62,7 +81,17 @@ class Main:
 
 
 
-    def letsPlay(self):  #method to maintain a game (and wigets)
+    def letsPlay(self):
+        """
+            Function to menage the game and the wigets like
+            functional buttons:
+            "HINT", "SKIP", "EXCHANGE ALL" "EXCHENGE ONE", "END MOVE"
+            and labels:
+            turn label, score label, information about points for letters
+            and visualisation of the player's rack.
+            :return: void - only creating tkinter wigets
+        """
+
         b = [['' for columns in range(15)] for rows in range(15)]    #represetation of the board
         GameContr = GameController(self.root,self.mainframe,self.sack,self.player1,self.player2)
         board = BoardVisual(self.root,self.mainframe, b)             #visualization of the board
@@ -76,7 +105,7 @@ class Main:
         exchangeOneB["command"] = lambda: GameContr.exchangeOne(PRackButtons,board.board
                                                                 ,exchangeAllB,exchangeOneB,skipB)
         hintButton = Button(self.mainframe,text="HINT", width=12,state="disabled")
-        hintButton["command"] = lambda: GameContr.hint()
+        hintButton["command"] = lambda: GameContr.hint(board,PScoreLabel,ScoreLabel,TurnLabel,PRackButtons)
         endMoveButton = Button(self.mainframe, text="END MOVE", width=12)
         endMoveButton["command"] = lambda: GameContr.endTurn(PScoreLabel,ScoreLabel,TurnLabel,PRackButtons,board.board,
                                                              hintButton,exchangeAllB,exchangeOneB,skipB)

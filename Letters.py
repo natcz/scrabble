@@ -1,12 +1,25 @@
 from random import randint, choice
 
 class Letters:
+    """
+        Letters class stores information about letters.
+    """
 
     def __init__(self):
-        self.bag = dict()           #dictionary with info about letters
+        """
+            Constructor of Letters class.
+            bag:(dictionary) key: letter val: [points you get for the letter, number of tiles in the bag]
+
+        """
+        self.bag = dict()
         self.startLetters()
 
-    def startLetters(self):         # key: letter - val: [points you get for the letter, number of tiles in the bag]
+    def startLetters(self):
+        """
+            This function creates dictionary with info about letters
+            :return: void - only changing the object
+        """
+
         self.bag['A'] = [1,9]
         self.bag['B'] = [3,2]
         self.bag['C'] = [3,2]
@@ -35,11 +48,21 @@ class Letters:
         self.bag['Z'] = [10,1]
 
     def getLetters(self):
+        """
+            This function returns bag of letters
+            :return: dict  - dict with info about letters
+        """
         return self.bag
 
-    def makeDict(self):                     #making a  set of words from the english dictionary file
+    def makeDict(self):
+        """
+            This function makes a  set of words from the english dictionary file.
+            File is from  https://www.mit.edu/~ecprice/wordlist.10000
+            :return: set - set of english words
+        """
+
         try:
-            d_file = open('dictionary')     #file from  https://www.mit.edu/~ecprice/wordlist.10000
+            d_file = open('dictionary')
             eng_dict = set()
             for line in d_file:
                 line = line.strip()

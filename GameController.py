@@ -1,3 +1,5 @@
+import copy
+
 from Rack import *
 from Board import *
 from Letters import *
@@ -15,11 +17,25 @@ coord = []              #coordinates of letters in the current placing word list
 l = Letters()
 eng_dict = l.makeDict() #english dictionary set
 demoBoard = Board(15)
+boardcopy = demoBoard.board[:]
 rack_indx = dd()        #deafultdict where key:letter    val:index in the rack
 
 class GameController:
+    """
+        GameController class is kind of a backend tool.
+        It manages all the functional buttons and moves of the players.
+    """
 
     def __init__(self,root,frame,sack,player1,player2):
+        """
+                Constructor of GameController class.
+                    :param root:(Tk) tkinter root
+                    :param frame:(Frame) main frame when all the wigets are placed
+                    :param player1:(Player) player representation
+                    :param player2:(Player) player representation
+                    :param sack:(Sack) bag of letters
+
+        """
         self.root = root
         self.sack = sack
         self.frame = frame
@@ -27,7 +43,13 @@ class GameController:
         self.pl2 = player2
 
 
-    def skip(self,scrLabel,scrL,turnLabel,rackButtons): #what happens when player hit the button SKIP
+    def skip(self,scrLabel,scrL,turnLabel,rackButtons):
+        """
+            This function is responsible of what happens when player hits the button SKIP
+            :return: void - changing the turn (changing wigets)
+        """
+        self.pl1.rack.fillRack()
+        self.pl2.rack.fillRack()
         global turn
 
         if turn % 2 == 0:
@@ -37,7 +59,7 @@ class GameController:
             playerRack = self.pl1.rack.getRack()
             for i in range(len(rackButtons)):
                 rackButtons[i]["text"] = str(playerRack[i])
-            turn += 1
+
         else:
             scrLabel["text"] = str(self.pl2.name).upper() + "'S SCORE:"
             scrL["text"] = str(self.pl2.score)
@@ -45,11 +67,19 @@ class GameController:
             playerRack = self.pl2.rack.getRack()
             for i in range(len(rackButtons)):
                 rackButtons[i]["text"] = str(playerRack[i])
-            turn += 1
+
+
+        turn +=1
 
 
 
-    def exchangeAll(self,rackButtons):   #what happens when player hit the button EXCHANGE ALL
+
+    def exchangeAll(self,rackButtons):
+        """
+                This function is responsible of what happens when player hits the button EXCHANGE ALL
+                :param rackButtons: (list) list of tkinter buttons representing player's rack
+                :return: void - changing the tiles in the rack (changing wigets)
+        """
         global turn
 
         if turn % 2 != 0:
@@ -64,7 +94,17 @@ class GameController:
                 rackButtons[i]["text"] = str(playerRack[i])
 
 
-    def exchangeOne(self,rackButtons,board,exAllButton,exOneButton,skipButton): #what happens when player hit the button EXCHANGE ONE
+    def exchangeOne(self,rackButtons,board,exAllButton,exOneButton,skipButton):
+        """
+            This function is responsible of what happens when player hits the button EXCHANGE ONE
+            :param rackButtons: (list) list of tkinter buttons representing player's rack
+            :param board:(Board) representation of the board
+            :param exAllButton:(Button) tkinter button to exchange all letters
+            :param exOneButton:(Button) tkinter button to exchange one letter
+            :param skipButton:(Button) tkinter button to skip the turn
+            :return: void - changing one letter from the rack (changing wigets)
+        """
+
         def exOne(button,ind):
             if turn % 2 != 0:
                 new_letter = self.pl1.rack.exchangeOne(ind)   # Rack() method
@@ -86,7 +126,17 @@ class GameController:
 
 
 
-    def makeMove(self,ind,board,rackButtons,exAllButton,exOneButton,skipButton): #placing tile on the board
+    def makeMove(self,ind,board,rackButtons,exAllButton,exOneButton,skipButton):
+        """
+                This function is responsible of making the move, placing the letter onto the board
+                :param ind: index of the letter in the rack
+                :param rackButtons: (list) list of tkinter buttons representing player's rack
+                :param board:(Board) representation of the board
+                :param exAllButton:(Button) tkinter button to exchange all letters
+                :param exOneButton:(Button) tkinter button to exchange one letter
+                :param skipButton:(Button) tkinter button to skip the turn
+                :return: void - changing one letter from the rack (changing wigets)
+        """
         global rack_indx
         def placeLetter(button,row,col,letter):
             global coord
@@ -112,7 +162,15 @@ class GameController:
         skipButton["state"] = "disabled"
 
 
-    def undoMove(self,coords,board,rackButtons):  #in case of wrong move
+    def undoMove(self,coords,board,rackButtons):
+        """
+                This function is responsible of what happens when player makes the wrong move
+                :param rackButtons: (list) list of tkinter buttons representing player's rack
+                :param board:(Board) representation of the board
+                :param coords:(list) list of coordinates
+
+                :return: void -  changing wigets
+        """
         global demoBoard
         for i in range(len(coords)):        #letters out of the board
             board[coords[i][0]][coords[i][1]]["text"] = " "
@@ -121,7 +179,12 @@ class GameController:
             rackButtons[i]["state"] = "normal"
 
 
-    def makeProperWord(self):  #making word from letters placed in current turn on the board
+    def makeProperWord(self):
+        """
+                This function makes word from letters placed in current turn on the board
+                :return: string - word
+        """
+
         global Wcoordinates, coord
         sameRow = True
         sameCol = True
@@ -148,11 +211,27 @@ class GameController:
 
 
 
-    def endTurn(self,scrLabel,scrL,turnLabel,rackButtons,            #when player hit END TURN button
+    def endTurn(self,scrLabel,scrL,turnLabel,rackButtons,
                 visualB,hintButton,exAllButton,exOneButton,skipButton):
+        """
+            This function is responsible of what happens when player hits "END TURN" button
+            :param rackButtons: (list) list of tkinter buttons representing player's rack
+            :param exAllButton:(Button) tkinter button to exchange all letters
+            :param exOneButton:(Button) tkinter button to exchange one letter
+            :param skipButton:(Button) tkinter button to skip the turn
+            :param hintButton:(Button) tkinter button to get a hint
+            :param visualB: (BoardVisual) board visualization
+            :param turnLabel:(Label) displays who's turn it is
+            :param scrL:(Label) displays score
+            :param scrLabel:(Label) displays score
+
+
+            :return: void -  changing wigets
+        """
         global coord,eng_dict,rack_indx,turn
         global Wcoordinates,demoBoard,good_first_word
-        checkB = CheckBoard(demoBoard)
+        demolist = demoBoard.getBoard()
+        checkB = CheckBoard(demolist[:])
         proper_word = self.makeProperWord()
         w = Word(proper_word)
 
@@ -218,27 +297,45 @@ class GameController:
         exAllButton["state"] = "normal"
         exOneButton["state"] = "normal"
         skipButton["state"] = "normal"
-        hintButton["state"] = "normal"
+        if good_first_word:
+            hintButton["state"] = "normal"
         self.skip(scrLabel,scrL,turnLabel,rackButtons) #next turn
 
-    def hint(self): #when player hit HINT button
-        #finding hint
+    def hint(self,visualB,scrLabel,scrL,turnLabel,rackButtons):
+        """
+                This function finds hint using Hint class method
+                :return:void - displaying hint and its coordinates as a tkinter message
+        """
+        demolist = demoBoard.getBoard()
+        prev_board = copy.deepcopy(demoBoard)
         if turn % 2 != 0:
-            h = Hint(demoBoard,eng_dict,self.pl1.rack.getRack())
+            h = Hint(demolist,eng_dict,self.pl1.rack.getRack())
             word,w_coord = h.findHint()
         else:
-            h = Hint(demoBoard, eng_dict, self.pl2.rack.getRack())
+            h = Hint(demolist, eng_dict, self.pl2.rack.getRack())
             word, w_coord = h.findHint()
+
         if word != "":   #found hint
-            x, y = w_coord[0]
+
+            for i in range(len(w_coord)):
+                visualB.board[w_coord[i][0]][w_coord[i][1]]["text"] = word[i]
+                if turn % 2 != 0:
+                    self.pl1.rack.remove(word[i])
+                else:
+                    self.pl2.rack.remove(word[i])
+
+
             hint_window = Toplevel()
             hint_msg = Message(hint_window)
-            hint_msg["text"] = "TRY: " + str(word).upper()  + "\n start at: " + str(x+1) +"," + str(y+1)
+            hint_msg["text"] = "HINT: " + str(word).upper()
             hint_msg.grid(column=1 , row=1)
             close_button = Button(hint_window,text="OK")
             close_button.grid(column=2,row=2)
-            close_button["command"] = lambda: hint_window.destroy()
+            close_button["command"] = lambda: [hint_window.destroy(), self.skip(scrLabel,scrL,turnLabel,rackButtons)]
+
+
         else:      #no hint founded
+            demoBoard.board = prev_board.board
             hint_window = Toplevel()
             hint_msg = Message(hint_window,
                                text="NO PROPER MOVE FOUND")
@@ -248,6 +345,12 @@ class GameController:
             close_button["command"] = lambda: hint_window.destroy()
 
 
+
+
     def endGame(self):
+        """
+                This function is responsible for what happens when the game ends
+                :return: void - displaying endWindow (using EndGame class method)
+        """
         endG = EndGame(self.pl1, self.pl2, self.root)
         endG.endWindow()

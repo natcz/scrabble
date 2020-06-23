@@ -2,8 +2,19 @@ from Player import *
 
 
 class StartGame:
+    """
+        StartGame class is used when the game starts
+
+    """
 
     def __init__(self):
+        """
+                Constructor of StartGame class.
+
+                instruction:(string) instruction of the game
+
+
+        """
         self.instruction = "Welcome to Scrabble!\n" \
                            "Scrabble is a board game for 2 players.\n" \
                            "Each of them will get 7 random letters from the Bag. They need to make up the word with these and the ones\n" \
@@ -15,7 +26,7 @@ class StartGame:
                            "On your right you can see a label informing about which player's turn it is and his score.\n" \
                            "Your tiles are displayed below and on the left you will see a functional buttons.\n" \
                            "On the right side there is an information about points you get using a particular letter\n\n" \
-                           "When you are the one making the first move you must start placing your word on the special sqauare with ♥ on.\n" \
+                           "When you are the one making the first move you must start placing your word on the special square with # on.\n" \
                            "After each correct move your rack is being filled and your score increased.\n" \
                            "In case of incorrect move you will be notified and you will loose your turn.\n\n" \
                            "2. Functional buttons:\n" \
@@ -30,4 +41,10 @@ class StartGame:
                            "The winner's name is displayed on the screen."
 
     def viewInstruct(self):
+        """
+            This function returns instruction
+            :return: string - instruction
+
+        """
+
         return self.instruction
